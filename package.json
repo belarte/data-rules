@@ -1,0 +1,17 @@
+{
+  "name": "data-rules",
+  "version": "0.1.0",
+  "description": "Playing with data oriented programming, DSL and rule engine",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belarte/data-rules.git"
+  },
+  "author": "Bruno Belarte",
+  "homepage": "https://github.com/belarte/data-rules#readme"
+}
