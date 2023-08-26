@@ -13,5 +13,8 @@
     "url": "git+https://github.com/belarte/data-rules.git"
   },
   "author": "Bruno Belarte",
-  "homepage": "https://github.com/belarte/data-rules#readme"
+  "homepage": "https://github.com/belarte/data-rules#readme",
+  "dependencies": {
+    "peggy": "^3.0.2"
+  }
 }
