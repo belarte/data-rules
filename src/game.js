@@ -1,10 +1,21 @@
+import fs from 'fs';
 import { SystemState } from "./system.js";
+import { parse } from './behavior/parser.js';
 
 export class Game {
   constructor() {
     this.state = new SystemState();
-    this.state.loadBehaviors();
+    this.loadBehaviors();
   }
+
+  loadBehaviors() {
+    const file = fs.readFileSync('./resources/behaviors.dsl', 'utf8');
+    const behaviors = parse(file);
+
+    const previous = this.state.get();
+    const next = previous.set('behaviors', behaviors);
+    this.state.commit(next);
+  };
 
   addCharacter(team, name, character) {
     var previous = this.state.get();
