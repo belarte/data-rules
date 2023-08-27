@@ -8,7 +8,7 @@ describe('The system', () => {
   system.loadBehaviors();
 
   it('should load behaviors', () => {
-    const keys = Object.keys(system.get()['behaviors']);
+    const keys = Object.keys(system.get().get('behaviors'));
     assert.ok(keys.includes('idle'));
   });
 });

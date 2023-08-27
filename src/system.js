@@ -1,9 +1,11 @@
 import fs from 'fs';
+import { Map } from 'immutable';
+
 import { parse } from './rules/parser.js';
 
 export class SystemState {
   constructor() {
-    this.state = {};
+    this.state = Map({});
   }
    
   get() {
@@ -17,7 +19,7 @@ export class SystemState {
   loadBehaviors() {
     const file = fs.readFileSync('./resources/behaviors.dsl', 'utf8');
     const behaviors = parse(file);
-    this.state['behaviors'] = behaviors;
+    this.state = this.state.set('behaviors', behaviors);
   };
 };
 
