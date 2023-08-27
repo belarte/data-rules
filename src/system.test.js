@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { SystemState } from './system.js';
 
 describe('The system', () => {
-  const system = new SystemState({});
+  const system = new SystemState();
   system.loadBehaviors();
 
   it('should load behaviors', () => {

@@ -2,8 +2,8 @@ import fs from 'fs';
 import { parse } from './rules/parser.js';
 
 export class SystemState {
-  constructor(state) {
-    this.state = state;
+  constructor() {
+    this.state = {};
   }
    
   get() {
@@ -20,3 +20,4 @@ export class SystemState {
     this.state['behaviors'] = behaviors;
   };
 };
+
