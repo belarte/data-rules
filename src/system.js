@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { Map } from 'immutable';
 
-import { parse } from './rules/parser.js';
+import { parse } from './behavior/parser.js';
 
 export class SystemState {
   constructor() {
