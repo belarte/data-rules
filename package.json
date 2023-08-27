@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "node --test src"
+    "test": "node --test src",
+    "test:watch": "node --test --watch src",
+    "test:coverage": "node --test  --experimental-test-coverage"
   },
   "repository": {
     "type": "git",
