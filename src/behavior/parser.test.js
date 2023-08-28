@@ -15,9 +15,42 @@ const idleOutput = {
   },
 };
 
+const drinkPotion = `
+drink-potion {
+    when
+        hp below 50%;
+        carries health-potion;
+    then
+        use health-potion
+}`;
+
+const drinkPotionOutput = {
+  "drink-potion": {
+    conditions: [
+      {
+        name: "hp",
+        args: ["below", 0.5],
+      },
+      {
+        name: "carries",
+        args: ["health-potion"],
+      },
+    ],
+    action: {
+      name: "use",
+      args: ["health-potion"],
+    },
+  },
+};
+
 describe('The parser', () => {
-  it('should parse a simple rule', () => {
+  it('should parse idle', () => {
     const output = parse(idle);
     assert.deepEqual(output, idleOutput);
+  });
+
+  it('should parse drink-potion', () => {
+    const output = parse(drinkPotion);
+    assert.deepEqual(output, drinkPotionOutput);
   });
 });
