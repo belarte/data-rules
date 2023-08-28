@@ -1,4 +1,6 @@
 import fs from 'fs';
+import Immutable from 'immutable'
+
 import { SystemState } from "./system.js";
 import { parse } from './behavior/parser.js';
 
@@ -13,13 +15,13 @@ export class Game {
     const behaviors = parse(file);
 
     const previous = this.state.get();
-    const next = previous.set('behaviors', behaviors);
+    const next = previous.set('behaviors', Immutable.fromJS(behaviors));
     this.state.commit(next);
   };
 
   addCharacter(team, name, character) {
     var previous = this.state.get();
-    var next = previous.setIn(['characters', team, name], character);
+    var next = previous.setIn(['characters', team, name], Immutable.fromJS(character));
     this.state.commit(next);
   }
 

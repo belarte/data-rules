@@ -7,8 +7,9 @@ describe('The game', () => {
   const game = new Game();
 
   it('should load behaviors', () => {
-    const keys = Object.keys(game.state.get().get('behaviors'));
-    assert.ok(keys.includes('idle'));
+    assert.ok(
+      game.state.get().get('behaviors').has('idle')
+    );
   });
 });
 
