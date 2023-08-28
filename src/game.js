@@ -28,8 +28,8 @@ export class Game {
   play(team, player) {
     var previous = this.state.get();
     const behavior = previous.getIn(['characters', team, player, 'behavior']);
-    evaluateRule(previous, behavior);
-    this.state.commit(previous);
+    const next = evaluateRule(previous, behavior);
+    this.state.commit(next);
   }
 }
 
