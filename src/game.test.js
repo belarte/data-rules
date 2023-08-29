@@ -7,8 +7,10 @@ describe('The game', () => {
   const game = new Game();
 
   it('should load behaviors', () => {
+    const behaviors = game.state.get().get('behaviors').keySeq();
+
     assert.ok(
-      game.state.get().get('behaviors').has('idle')
+      ['idle', 'drink-potion'].every(i => behaviors.includes(i))
     );
   });
 });

@@ -2,15 +2,18 @@ import peggy from 'peggy';
 
 const grammar = `
 start
-  = _ name:identifier _ "{" _ rule:rule _ "}" {
+  = _ rules:rule|.., _| { return Object.assign({}, ...rules); }
+
+rule
+  = _ name:identifier _ "{" _ ruleBody:ruleBody _ "}" {
       return {
         [name]: {
-          ...rule,
+          ...ruleBody,
         },
       };
     }
 
-rule
+ruleBody
   = _ "when" _ conditions:conditions _ "then" _ action:action {
       return { action, conditions, };
     }

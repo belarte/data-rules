@@ -53,4 +53,12 @@ describe('The parser', () => {
     const output = parse(drinkPotion);
     assert.deepEqual(output, drinkPotionOutput);
   });
+
+  it('should parse multiple behaviors', () => {
+    const output = parse(idle + "\n\n" + drinkPotion);
+    assert.deepEqual(output, {
+      ...idleOutput,
+      ...drinkPotionOutput,
+    });
+  });
 });
