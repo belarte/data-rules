@@ -1,5 +1,4 @@
-import { describe, it } from 'node:test';
-import assert from 'node:assert/strict';
+import { describe, it, expect } from 'vitest';
 
 import { Game } from './game.js';
 
@@ -9,9 +8,7 @@ describe('The game', () => {
   it('should load behaviors', () => {
     const behaviors = game.state.get().get('behaviors').keySeq();
 
-    assert.ok(
-      ['idle', 'drink-potion'].every(i => behaviors.includes(i))
-    );
+    expect(['idle', 'drink-potion'].every(i => behaviors.includes(i))).toBeTruthy();
   });
 });
 
@@ -24,7 +21,7 @@ describe('A character with idle behavior', () => {
     game.play('Blue Team', 'Blue');
     const after = game.state.get();
 
-    assert.deepEqual(before, after);
+    expect(before).toStrictEqual(after);
   });
 });
 
@@ -48,7 +45,7 @@ describe('A character with drink-potion behavior', () => {
     game.play('Blue Team', 'Blue');
 
     const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
-    assert.deepEqual(after, character);
+    expect(after).toStrictEqual(character);
   });
 
   it('should drink a potion when his life is low', () => {
@@ -58,6 +55,6 @@ describe('A character with drink-potion behavior', () => {
     game.play('Blue Team', 'Blue');
 
     const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
-    assert.deepEqual(after, expected);
+    expect(after).toStrictEqual(expected);
   });
 });

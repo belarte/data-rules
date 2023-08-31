@@ -1,5 +1,4 @@
-import { describe, it } from 'node:test';
-import assert from 'node:assert/strict';
+import { describe, it, expect } from 'vitest';
 
 import { parse } from './parser.js';
 
@@ -46,17 +45,17 @@ const drinkPotionOutput = {
 describe('The parser', () => {
   it('should parse idle', () => {
     const output = parse(idle);
-    assert.deepEqual(output, idleOutput);
+    expect(output).toStrictEqual(idleOutput);
   });
 
   it('should parse drink-potion', () => {
     const output = parse(drinkPotion);
-    assert.deepEqual(output, drinkPotionOutput);
+    expect(output).toStrictEqual(drinkPotionOutput);
   });
 
   it('should parse multiple behaviors', () => {
     const output = parse(idle + "\n\n" + drinkPotion);
-    assert.deepEqual(output, {
+    expect(output).toStrictEqual({
       ...idleOutput,
       ...drinkPotionOutput,
     });
