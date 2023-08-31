@@ -14,10 +14,10 @@ rule
     }
 
 ruleBody
-  = _ "when" _ conditions:conditions _ "then" _ action:action {
+  = _ "when" _ conditions:conditions _ "then" _ action:func {
       return { action, conditions, };
     }
-  / action:action {
+  / action:func {
       return { action, conditions: [], };
     }
 
@@ -25,12 +25,12 @@ conditions
   = conditions:condition|.., _| {
       return [...conditions];
     }
-  / _ condition:condition {
-      return [condition];
-    }
 
 condition
-  = name:identifier _ args:args ";" {
+  = func:func ";" { return func; }
+
+func "func"
+  = name:identifier _ args:args {
       return { name, args: [...args], };
     }
 
@@ -39,11 +39,6 @@ args
 
 arg "argument"
   = identifier / percentages / number
-
-action "action"
-  = name:identifier _ args:args {
-      return { name, args: [...args], };
-    }
 
 identifier "identifier"
   = name:[a-zA-Z\-]+ { return name.join(""); }
