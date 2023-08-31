@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 
 import { SystemState } from "./system.js";
 import { parse } from './behavior/parser.js';
+import * as character from './character/character.js';
 
 export class Game {
   constructor() {
@@ -28,26 +29,53 @@ export class Game {
   play(team, player) {
     var previous = this.state.get();
     const behavior = previous.getIn(['characters', team, player, 'behavior']);
-    const next = evaluateRule(previous, behavior);
+    const next = evaluateRule(previous, [team, player], behavior);
     this.state.commit(next);
   }
 }
 
-const evaluateRule = (state, behavior) => {
+const evaluateRule = (state, playerPath, behavior) => {
   const evaluatedCondition = state
     .getIn(['behaviors', behavior, 'conditions'])
-    .every(_ => true);
+    .every(c => evaluateFunction(state, playerPath, c));
 
   if (evaluatedCondition) {
-    const action = state.getIn(['behaviors', behavior, 'action', 'name']);
-    return library[action](state);
+    const action = state.getIn(['behaviors', behavior, 'action']);
+    return evaluateFunction(state, playerPath, action);
   }
 
   return state;
 }
 
+const evaluateFunction = (state, playerPath, condition) => {
+  const name = condition.get('name');
+  const args = condition.get('args');
+  return library[name](state, playerPath, ...args);
+};
+
 const library = {
   wait: (state) => {
     return state;
+  },
+
+  use: (state, playerPath, item) => {
+    const player = state.getIn(['characters', ...playerPath]);
+    const nextPlayer = character.use(player, item);
+    return state.setIn(['characters', ...playerPath], nextPlayer);
+  },
+
+  hp: (state, playerPath, comparator, value) => {
+    const comparators = {
+      'below': (a, b) => a < b,
+    };
+
+    const comparatorFn = comparators[comparator];
+    const player = state.getIn(['characters', ...playerPath]);
+    return comparatorFn(character.hp(player), value);
+  },
+
+  carries: (state, playerPath, item) => {
+    const player = state.getIn(['characters', ...playerPath]);
+    return character.carries(player, item);
   },
 };

@@ -27,3 +27,37 @@ describe('A character with idle behavior', () => {
     assert.deepEqual(before, after);
   });
 });
+
+const buildCharacter = (currentHP, potionQuantity) => ({
+  behavior: 'drink-potion',
+  stats: {
+    currentHP,
+    maxHP: 100,
+  },
+  bag: {
+    ...(potionQuantity > 0) && { 'health-potion': { potency: 30, quantity: potionQuantity } },
+  },
+});
+
+describe('A character with drink-potion behavior', () => {
+  const game = new Game();
+
+  it('should not drink a potion when his life is full', () => {
+    const character = buildCharacter(100, 1);
+    game.addCharacter('Blue Team', 'Blue', character);
+    game.play('Blue Team', 'Blue');
+
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    assert.deepEqual(after, character);
+  });
+
+  it('should drink a potion when his life is low', () => {
+    const character = buildCharacter(49, 1);
+    const expected = buildCharacter(79, 0);
+    game.addCharacter('Blue Team', 'Blue', character);
+    game.play('Blue Team', 'Blue');
+
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    assert.deepEqual(after, expected);
+  });
+});
