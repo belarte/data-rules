@@ -1,5 +1,5 @@
 import fs from 'fs';
-import Immutable from 'immutable'
+import Immutable from 'immutable';
 
 import { SystemState } from "./system.js";
 import { parse } from './behavior/parser.js';
@@ -45,7 +45,7 @@ const evaluateRule = (state, playerPath, behavior) => {
   }
 
   return state;
-}
+};
 
 const evaluateFunction = (state, playerPath, condition) => {
   const name = condition.get('name');
