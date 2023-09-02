@@ -38,7 +38,10 @@ args
   = args:arg|.., _|  { return [...args] }
 
 arg "argument"
-  = identifier / percentages / number
+  = chain / identifier / percentages / number
+
+chain "chain"
+  = id:identifier "." ids:identifier|.., "."| { return [id, ...ids]; }
 
 identifier "identifier"
   = name:[a-zA-Z\-]+ { return name.join(""); }

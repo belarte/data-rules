@@ -13,6 +13,16 @@ drink-potion {
         use health-potion
 }`;
 
+const healSelf = `
+heal-self {
+    when
+        hp below 50%;
+        equipped spells.heal;
+        mp above spells.heal.cost;
+    then
+        cast heal self
+}`;
+
 const output = {
   idle: {
     conditions: [],
@@ -38,12 +48,34 @@ const output = {
       args: ["health-potion"],
     },
   },
+
+  "heal-self": {
+    conditions: [
+      {
+        name: "hp",
+        args: ["below", 0.5],
+      },
+      {
+        name: "equipped",
+        args: [["spells", "heal"]],
+      },
+      {
+        name: "mp",
+        args: ["above", ["spells", "heal", "cost"]],
+      }
+    ],
+    action: {
+      name: "cast",
+      args: ["heal", "self"],
+    },
+  },
 };
 
 describe('The parser', () => {
   it.each([
     ['idle', idle],
     ['drink-potion', drinkPotion],
+    ['heal-self', healSelf]
   ])('should parse %s', (name, input) => {
     const parsed = parse(input);
     expect(Object.keys(parsed)).toHaveLength(1);
