@@ -25,3 +25,19 @@ export const use = (character, itemName) => {
     .set('bag', newBag)
     .setIn(['stats', 'currentHP'], newHP);
 };
+
+export const mp = (character) => {
+  return character.getIn(['stats', 'currentMP']);
+}
+
+export const equipped = (character, path) => {
+  return character.hasIn(['equippement', ...path]);
+}
+
+export const cast = (character, spell) => {
+  const potency = character.getIn(['equippement', 'spells', spell, 'potency']);
+  const cost = character.getIn(['equippement', 'spells', spell, 'cost']);
+  return character
+    .updateIn(['stats', 'currentMP'], mp => mp - cost)
+    .updateIn(['stats', 'currentHP'], hp => Math.min(hp + potency, 100));
+}

@@ -74,6 +74,27 @@ const library = {
     return comparatorFn(character.hp(player), value);
   },
 
+  mp: (state, playerPath, comparator, valuePath) => {
+    const comparators = {
+      'above': (a, b) => a > b,
+    };
+
+    const comparatorFn = comparators[comparator];
+    const player = state.getIn(['characters', ...playerPath]);
+    const value = player.getIn(['equippement', ...valuePath]);
+    return comparatorFn(character.mp(player), value);
+  },
+
+  equipped: (state, playerPath, path) => {
+    const res = character.equipped(state.getIn(['characters', ...playerPath]), path);
+    return res;
+  },
+
+  cast: (state, playerPath, spell) => {
+    const nextPlayer = character.cast(state.getIn(['characters', ...playerPath]), spell);
+    return state.setIn(['characters', ...playerPath], nextPlayer);
+  },
+
   carries: (state, playerPath, item) => {
     const player = state.getIn(['characters', ...playerPath]);
     return character.carries(player, item);

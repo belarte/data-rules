@@ -17,6 +17,18 @@ describe("A character's hp", () => {
   });
 });
 
+describe("A character's mp", () => {
+  it.each([
+    [0],
+    [1],
+    [4],
+    [10],
+  ])("should be %d when hp are %d/%d", (currentMP) => {
+    const player = Immutable.fromJS({ stats: { currentMP } });
+    expect(character.mp(player)).toBe(currentMP);
+  });
+});
+
 describe("A character's bag", () => {
   it.each([
     [ { 'health-potion': { quantity: 1 } } ],
@@ -60,3 +72,36 @@ describe('When a character uses a potion', () => {
   });
 });
 
+describe('When checking if a character equips a spell', () => {
+  it('should return false if spell is not equipped', () => {
+    const player = Immutable.fromJS({ equippement: { spells: {} } });
+    const equipped = character.equipped(player, ['spells', 'heal']);
+    expect(equipped).toBeFalsy();
+  });
+
+  it('should return true if spell is equipped', () => {
+    const player = Immutable.fromJS({ equippement: { spells: { 'heal': {} } } });
+    const equipped = character.equipped(player, ['spells', 'heal']);
+    expect(equipped).toBeTruthy();
+  });
+});
+
+describe('When a character casts a spell', () => {
+  const player = Immutable.fromJS({
+    stats: { currentHP: 70, maxHP: 100, currentMP: 10, maxMP: 10 },
+    equippement: { spells: { 'heal': { potency: 20, cost: 4 } } },
+  });
+
+  it('should increase his HP', () => {
+    const playerAfter = character.cast(player, 'heal');
+    expect(playerAfter.getIn(['stats', 'currentHP'])).toBe(90);
+    expect(playerAfter.getIn(['stats', 'currentMP'])).toBe(6);
+  });
+
+  it('should increase his HP but not above the maximum', () => {
+    const playerAfter = character.cast(
+      character.cast(player, 'heal'), 'heal');
+    expect(playerAfter.getIn(['stats', 'currentHP'])).toBe(100);
+    expect(playerAfter.getIn(['stats', 'currentMP'])).toBe(2);
+  });
+});
