@@ -53,6 +53,11 @@ const evaluateFunction = (state, playerPath, condition) => {
   return library[name](state, playerPath, ...args);
 };
 
+const comparators = {
+  'below': (a, b) => a < b,
+  'above': (a, b) => a > b,
+};
+
 const library = {
   wait: (state) => {
     return state;
@@ -65,20 +70,12 @@ const library = {
   },
 
   hp: (state, playerPath, comparator, value) => {
-    const comparators = {
-      'below': (a, b) => a < b,
-    };
-
     const comparatorFn = comparators[comparator];
     const player = state.getIn(['characters', ...playerPath]);
     return comparatorFn(character.hp(player), value);
   },
 
   mp: (state, playerPath, comparator, valuePath) => {
-    const comparators = {
-      'above': (a, b) => a > b,
-    };
-
     const comparatorFn = comparators[comparator];
     const player = state.getIn(['characters', ...playerPath]);
     const value = player.getIn(['equippement', ...valuePath]);
