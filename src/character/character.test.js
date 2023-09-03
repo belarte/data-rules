@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import Immutable from 'immutable';
 
-import * as character from './character.js';
+import * as character from 'src/character/character.js';
 
 describe("A character's hp", () => {
   it.each([

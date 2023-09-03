@@ -1,9 +1,9 @@
 import fs from 'fs';
 import Immutable from 'immutable';
 
-import { SystemState } from "./system.js";
-import { parse } from './behavior/parser.js';
-import * as library from './library.js';
+import { SystemState } from "src/system.js";
+import { parse } from 'src/behavior/parser.js';
+import * as library from 'src/library.js';
 
 export class Game {
   constructor() {
@@ -12,7 +12,7 @@ export class Game {
   }
 
   loadBehaviors() {
-    const file = fs.readFileSync('./resources/behaviors.dsl', 'utf8');
+    const file = fs.readFileSync('resources/behaviors.dsl', 'utf8');
     const behaviors = parse(file);
 
     const previous = this.state.get();

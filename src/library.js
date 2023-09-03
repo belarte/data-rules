@@ -1,4 +1,4 @@
-import * as character from './character/character.js';
+import * as character from 'src/character/character.js';
 
 // conditions
 

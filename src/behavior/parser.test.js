@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parse } from './parser.js';
+import { parse } from 'src/behavior/parser.js';
 
 const idle = `idle { wait }`;
 
