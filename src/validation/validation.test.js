@@ -54,3 +54,26 @@ describe("Validation", () => {
       .toThrow(/invalid argument/i);
   });
 });
+
+describe("Validation with object output", () => {
+  const argOjectSchema = {
+    type: 'array',
+    items: [
+      { type: 'object' },
+    ],
+    minItems: 1,
+    maxItems: 1,
+  };
+
+  const resOjectSchema = {
+    type: 'object',
+  };
+
+  it.each([
+    [{}],
+    [Immutable.fromJS({})],
+  ])("should be successful for %s", (arg) => {
+    expect(_ => validate(argOjectSchema, resOjectSchema, arg => arg, arg))
+      .not.toThrow();
+  });
+});
