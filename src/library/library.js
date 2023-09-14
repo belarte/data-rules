@@ -1,52 +1,15 @@
 import * as character from 'src/character/character.js';
 import { validate } from 'src/validation/validation.js';
+import {
+    stateSchema,
+    comparatorSchema,
+    numberSchema,
+    booleanSchema,
+    stringSchema,
+    pathSchema,
+} from 'src/library/schema.js';
 
 // conditions
-
-const stateSchema = {
-  type: 'object',
-  required: ['characters', 'behaviors'],
-  properties: {
-    characters: {
-      type: 'object',
-      properties: {},
-    },
-    behaviors: {
-      type: 'object',
-      properties: {},
-    },
-    additionalInfo: {
-      type: 'object',
-      required: ['currentPlayer'],
-      properties: {
-        currentPlayer: { type: 'array', minItems: 2, maxItems: 2, items: { type: 'string' } },
-      },
-    },
-  },
-};
-
-const comparatorSchema = {
-  type: 'string',
-  enum: ['below', 'above'],
-};
-
-const numberSchema = {
-  type: 'number',
-};
-
-const stringSchema = {
-  type: 'string',
-};
-
-const booleanSchema = {
-  type: 'boolean',
-};
-
-const pathSchema = {
-  type: 'array',
-  items: stringSchema,
-  minItems: 1,
-};
 
 export const hp = (state, playerPath, comparator, value) => {
   const schema = {
