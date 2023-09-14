@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import Immutable from 'immutable';
-
 import * as character from 'src/character/character.js';
+
+const builder = new character.Builder();
 
 describe("A character's hp", () => {
   it.each([
@@ -12,7 +12,7 @@ describe("A character's hp", () => {
     [0.75, 75, 100],
     [1, 100, 100],
   ])("should be %d when hp are %d/%d", (expected, currentHP, maxHP) => {
-    const player = Immutable.fromJS({ stats: { currentHP, maxHP } });
+    const player = builder.withHP(currentHP, maxHP).build();
     expect(character.hp(player)).toBe(expected);
   });
 });
@@ -24,7 +24,7 @@ describe("A character's mp", () => {
     [4],
     [10],
   ])("should be %d when hp are %d/%d", (currentMP) => {
-    const player = Immutable.fromJS({ stats: { currentMP } });
+    const player = builder.withMP(currentMP, 999).build();
     expect(character.mp(player)).toBe(currentMP);
   });
 });
@@ -35,7 +35,7 @@ describe("A character's bag", () => {
     [ { 'health-potion': { quantity: 7 } } ],
     [ { 'health-potion': { quantity: 1 }, 'mana-potion': { quantity: 1 } } ],
   ])("should contain a potion when the player carries %o", (bag) => {
-    const player = Immutable.fromJS({ bag });
+    const player = builder.withBag(bag).build();
     expect(character.carries(player, 'health-potion')).toBeTruthy();
   });
 
@@ -44,16 +44,16 @@ describe("A character's bag", () => {
     [ { 'health-potion': { quantity: 0 } } ],
     [ { 'mana-potion': { quantity: 1 } } ],
   ])(`should not contain a potion when the player carries %o`, (bag) => {
-    const player = Immutable.fromJS({ bag });
+    const player = builder.withBag(bag).build();
     expect(character.carries(player, 'health-potion')).toBeFalsy();
   });
 });
 
 describe('When a character uses a potion', () => {
-  const player = Immutable.fromJS({
-    stats: { currentHP: 50, maxHP: 100 },
-    bag: { 'health-potion': { potency: 30, quantity: 7 } },
-  });
+  const player = builder
+        .withHP(50, 100)
+        .withBag({ 'health-potion': { potency: 30, quantity: 7 } })
+        .build();
 
   it('should increase his HP', () => {
     const playerAfter = character.use(player, 'health-potion');
@@ -74,23 +74,23 @@ describe('When a character uses a potion', () => {
 
 describe('When checking if a character equips a spell', () => {
   it('should return false if spell is not equipped', () => {
-    const player = Immutable.fromJS({ equippement: { spells: {} } });
+    const player = builder.build();
     const equipped = character.equipped(player, ['spells', 'heal']);
     expect(equipped).toBeFalsy();
   });
 
   it('should return true if spell is equipped', () => {
-    const player = Immutable.fromJS({ equippement: { spells: { 'heal': {} } } });
+    const player = builder.withSpell('heal', {}).build();
     const equipped = character.equipped(player, ['spells', 'heal']);
     expect(equipped).toBeTruthy();
   });
 });
 
 describe('When a character casts a spell', () => {
-  const player = Immutable.fromJS({
-    stats: { currentHP: 70, maxHP: 100, currentMP: 10, maxMP: 10 },
-    equippement: { spells: { 'heal': { potency: 20, cost: 4 } } },
-  });
+  const player = builder
+        .withHP(70, 100)
+        .withSpell('heal', { potency: 20, cost: 4 })
+        .build();
 
   it('should increase his HP', () => {
     const playerAfter = character.cast(player, 'heal');
