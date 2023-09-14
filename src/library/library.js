@@ -7,6 +7,7 @@ import {
     booleanSchema,
     stringSchema,
     pathSchema,
+    targetSchema,
 } from 'src/library/schema.js';
 
 // conditions
@@ -95,11 +96,11 @@ export const use = (state, playerPath, item) => {
   return validate(schema, stateSchema, fun, state, item);
 };
 
-export const cast = (state, playerPath, spell) => {
+export const cast = (state, playerPath, spell, target) => {
   const schema = {
     type: 'array',
-    items: [stateSchema, stringSchema],
-    minItems: 2, maxItems: 2,
+    items: [stateSchema, stringSchema, targetSchema],
+    minItems: 3, maxItems: 3,
   };
 
   const fun = (state, spell) => {
@@ -107,7 +108,7 @@ export const cast = (state, playerPath, spell) => {
     return state.setIn(['characters', ...playerPath], nextPlayer);
   };
 
-  return validate(schema, stateSchema, fun, state, spell);
+  return validate(schema, stateSchema, fun, state, spell, target);
 };
 
 const comparators = {

@@ -43,3 +43,8 @@ export const pathSchema = {
   minItems: 1,
 };
 
+export const targetSchema = {
+  type: 'string',
+  enum: ['self'],
+};
+
