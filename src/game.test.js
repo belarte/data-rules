@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
 import { Game } from 'src/game.js';
+import { Builder } from 'src/character/builder.js';
+
+const builder = new Builder();
 
 describe('The game', () => {
   const game = new Game();
@@ -10,14 +13,15 @@ describe('The game', () => {
     ['idle'],
     ['drink-potion'],
     ['heal-self'],
-  ])('should load behavior %s', (behavior) => { 
+  ])('should load behavior %s', (behavior) => {
     expect(behaviors).toContain(behavior);
   });
 });
 
 describe('A character with idle behavior', () => {
   const game = new Game();
-  game.addCharacter('Blue Team', 'Blue', { behavior: 'idle' });
+  const character = builder.withBehavior('idle').build();
+  game.addCharacter('Blue Team', 'Blue', character);
 
   it('should not modify the game when playing', () => {
     const before = game.state.get();
@@ -31,42 +35,49 @@ describe('A character with idle behavior', () => {
 describe('A character with drink-potion behavior', () => {
   const game = new Game();
 
-  const buildCharacter = (currentHP, potionQuantity) => ({
-    behavior: 'drink-potion',
-    stats: {
-      currentHP,
-      maxHP: 100,
-    },
-    bag: {
-      ...(potionQuantity > 0) && { 'health-potion': { potency: 30, quantity: potionQuantity } },
-    },
-  });
-
   it('should not drink a potion when his bag is empty', () => {
-    const character = buildCharacter(49, 0);
+    const character = builder
+      .withBehavior("drink-potion")
+      .withHP(49, 100)
+      .build()
+
     game.addCharacter('Blue Team', 'Blue', character);
     game.play('Blue Team', 'Blue');
 
-    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']);
     expect(after).toStrictEqual(character);
   });
 
   it('should not drink a potion when his life is high', () => {
-    const character = buildCharacter(51, 1);
+    const character = builder
+      .withBehavior("drink-potion")
+      .withHP(51, 100)
+      .withBag({ "health-potion": { potency: 30, quantity: 1} })
+      .build()
+
     game.addCharacter('Blue Team', 'Blue', character);
     game.play('Blue Team', 'Blue');
 
-    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']);
     expect(after).toStrictEqual(character);
   });
 
   it('should drink a potion when his life is low', () => {
-    const character = buildCharacter(49, 1);
-    const expected = buildCharacter(79, 0);
+    const character = builder
+      .withBehavior("drink-potion")
+      .withHP(49, 100)
+      .withBag({ "health-potion": { potency: 30, quantity: 1} })
+      .build()
+
+    const expected = builder
+      .withBehavior("drink-potion")
+      .withHP(79, 100)
+      .build()
+
     game.addCharacter('Blue Team', 'Blue', character);
     game.play('Blue Team', 'Blue');
 
-    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']);
     expect(after).toStrictEqual(expected);
   });
 });
@@ -74,45 +85,49 @@ describe('A character with drink-potion behavior', () => {
 describe('A character with heal-self behavior', () => {
   const game = new Game();
 
-  const buildCharacter = (currentHP, currentMP, hasHeal) => ({
-    behavior: 'heal-self',
-    stats: {
-      currentHP,
-      maxHP: 100,
-      currentMP,
-    },
-    equippement: {
-      spells: {
-        ...(hasHeal) && { 'heal': { potency: 20, cost: 4 } },
-      },
-    },
-  });
-
   it('should not heal when the spell is not equipped', () => {
-    const character = buildCharacter(100, 10, false);
+    const character = builder
+      .withBehavior("heal-self")
+      .build()
+
     game.addCharacter('Blue Team', 'Blue', character);
     game.play('Blue Team', 'Blue');
 
-    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']);
     expect(after).toStrictEqual(character);
   });
 
   it('should not heal a potion when his life is full', () => {
-    const character = buildCharacter(100, 10, true);
+    const character = builder
+      .withBehavior("heal-self")
+      .withHP(100, 100)
+      .withSpell({ "heal": { potency: 20, cost: 4 } })
+      .build()
     game.addCharacter('Blue Team', 'Blue', character);
     game.play('Blue Team', 'Blue');
 
-    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']);
     expect(after).toStrictEqual(character);
   });
 
   it('should heal when his life is low', () => {
-    const character = buildCharacter(49, 10, true);
-    const expected = buildCharacter(69, 6, true);
+    const character = builder
+      .withBehavior("heal-self")
+      .withHP(49, 100)
+      .withMP(10, 10)
+      .withSpell("heal", { potency: 20, cost: 4 })
+      .build()
+    const expected = builder
+      .withBehavior("heal-self")
+      .withHP(69, 100)
+      .withMP(6, 10)
+      .withSpell( "heal", { potency: 20, cost: 4 })
+      .build()
+
     game.addCharacter('Blue Team', 'Blue', character);
     game.play('Blue Team', 'Blue');
 
-    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']).toJS();
+    const after = game.state.get().getIn(['characters', 'Blue Team', 'Blue']);
     expect(after).toStrictEqual(expected);
   });
 });

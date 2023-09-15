@@ -21,6 +21,11 @@ export class Builder {
     };
   }
 
+  withBehavior(behavior) {
+    this.character.behavior = behavior;
+    return this;
+  }
+
   withHP(currentHP, maxHP) {
     this.character.stats.currentHP = currentHP;
     this.character.stats.maxHP = maxHP;
