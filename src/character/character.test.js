@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
 import * as character from 'src/character/character.js';
+import { Builder } from 'src/character/builder.js';
 
-const builder = new character.Builder();
+const builder = new Builder();
 
 describe("A character's hp", () => {
   it.each([
