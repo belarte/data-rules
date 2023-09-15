@@ -37,8 +37,9 @@ export const equipped = (character, path) => {
 export const cast = (character, spell) => {
   const potency = character.getIn(['equippement', 'spells', spell, 'potency']);
   const cost = character.getIn(['equippement', 'spells', spell, 'cost']);
+  const maxHP = character.getIn(['stats', 'maxHP']);
   return character
     .updateIn(['stats', 'currentMP'], mp => mp - cost)
-    .updateIn(['stats', 'currentHP'], hp => Math.min(hp + potency, 100));
+    .updateIn(['stats', 'currentHP'], hp => Math.min(hp + potency, maxHP));
 }
 
