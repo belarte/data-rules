@@ -1,4 +1,4 @@
-import peggy from 'peggy';
+import peggy from "peggy";
 
 const grammar = `
 start
@@ -58,6 +58,6 @@ _ "whitespace"
 
 const parser = peggy.generate(grammar);
 
-export const parse = (input) => {
+export const parse = input => {
   return parser.parse(input);
 };

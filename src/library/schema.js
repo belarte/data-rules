@@ -1,50 +1,49 @@
 export const stateSchema = {
-  type: 'object',
-  required: ['characters', 'behaviors'],
+  type: "object",
+  required: ["characters", "behaviors"],
   properties: {
     characters: {
-      type: 'object',
+      type: "object",
       properties: {},
     },
     behaviors: {
-      type: 'object',
+      type: "object",
       properties: {},
     },
     additionalInfo: {
-      type: 'object',
-      required: ['currentPlayer'],
+      type: "object",
+      required: ["currentPlayer"],
       properties: {
-        currentPlayer: { type: 'array', minItems: 2, maxItems: 2, items: { type: 'string' } },
+        currentPlayer: { type: "array", minItems: 2, maxItems: 2, items: { type: "string" } },
       },
     },
   },
 };
 
 export const comparatorSchema = {
-  type: 'string',
-  enum: ['below', 'above'],
+  type: "string",
+  enum: ["below", "above"],
 };
 
 export const numberSchema = {
-  type: 'number',
+  type: "number",
 };
 
 export const stringSchema = {
-  type: 'string',
+  type: "string",
 };
 
 export const booleanSchema = {
-  type: 'boolean',
+  type: "boolean",
 };
 
 export const pathSchema = {
-  type: 'array',
+  type: "array",
   items: stringSchema,
   minItems: 1,
 };
 
 export const targetSchema = {
-  type: 'string',
-  enum: ['self'],
+  type: "string",
+  enum: ["self"],
 };
-

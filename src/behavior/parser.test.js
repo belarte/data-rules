@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from "vitest";
 
-import { parse } from 'src/behavior/parser.js';
+import { parse } from "src/behavior/parser.js";
 
 const idle = `idle { wait }`;
 
@@ -27,7 +27,7 @@ const output = {
   idle: {
     conditions: [],
     action: {
-      name: 'wait',
+      name: "wait",
       args: [],
     },
   },
@@ -62,7 +62,7 @@ const output = {
       {
         name: "mp",
         args: ["above", ["spells", "heal", "cost"]],
-      }
+      },
     ],
     action: {
       name: "cast",
@@ -71,20 +71,20 @@ const output = {
   },
 };
 
-describe('The parser', () => {
+describe("The parser", () => {
   it.each([
-    ['idle', idle],
-    ['drink-potion', drinkPotion],
-    ['heal-self', healSelf]
-  ])('should parse %s', (name, input) => {
+    ["idle", idle],
+    ["drink-potion", drinkPotion],
+    ["heal-self", healSelf],
+  ])("should parse %s", (name, input) => {
     const parsed = parse(input);
     expect(Object.keys(parsed)).toHaveLength(1);
     expect(parsed[name]).toStrictEqual(output[name]);
   });
 
-  it('should parse multiple behaviors', () => {
+  it("should parse multiple behaviors", () => {
     const parsed = parse(idle + "\n\n" + drinkPotion);
-    const unwrap = ({idle, 'drink-potion': drink}) => ({idle, 'drink-potion': drink});
+    const unwrap = ({ idle, "drink-potion": drink }) => ({ idle, "drink-potion": drink });
     expect(Object.keys(parsed)).toHaveLength(2);
     expect(parsed).toStrictEqual(unwrap(output));
   });
