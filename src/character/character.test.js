@@ -83,16 +83,13 @@ describe("When checking if a character equips a spell", () => {
 
 describe("When a character casts a spell", () => {
   const player = builder.withHP(70, 99).withSpell("heal", healSpell).build();
+  const [playerAfter, effect] = character.cast(player, "heal");
 
-  it("should increase his HP", () => {
-    const playerAfter = character.cast(player, "heal");
-    expect(playerAfter.getIn(["stats", "currentHP"])).toBe(90);
+  it("should decrease his MP when cast once", () => {
     expect(playerAfter.getIn(["stats", "currentMP"])).toBe(6);
   });
 
-  it("should increase his HP but not above the maximum", () => {
-    const playerAfter = character.cast(character.cast(player, "heal"), "heal");
-    expect(playerAfter.getIn(["stats", "currentHP"])).toBe(99);
-    expect(playerAfter.getIn(["stats", "currentMP"])).toBe(2);
+  it("should return the effect of the spell", () => {
+    expect(effect).toStrictEqual(["add", ["stats", "currentHP"], 20]);
   });
 });

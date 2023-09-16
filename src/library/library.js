@@ -110,11 +110,22 @@ export const cast = (state, playerPath, spell, target) => {
   };
 
   const fun = (state, playerPath, spell) => {
-    const [nextPlayer] = character.cast(state.getIn(["characters", ...playerPath]), spell);
+    const [player, effect] = character.cast(state.getIn(["characters", ...playerPath]), spell);
+    const nextPlayer = applyEffect(player, effect);
     return state.setIn(["characters", ...playerPath], nextPlayer);
   };
 
   return validate(schema, stateSchema, fun, state, playerPath, spell, target);
+};
+
+const applyEffect = (player, effect) => {
+  const [operation, path, value] = effect;
+  const nextPlayer = player.updateIn(path, stat => operations[operation](stat, value));
+  return nextPlayer;
+}
+
+const operations = {
+  add: (a, b) => a + b,
 };
 
 const comparators = {
