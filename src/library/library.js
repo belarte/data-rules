@@ -109,10 +109,15 @@ export const cast = (state, playerPath, spell, target) => {
     maxItems: 4,
   };
 
-  const fun = (state, playerPath, spell) => {
-    const [player, effect] = character.cast(state.getIn(["characters", ...playerPath]), spell);
-    const nextPlayer = applyEffect(player, effect);
-    return state.setIn(["characters", ...playerPath], nextPlayer);
+  const fun = (state, playerPath, spell, target) => {
+    switch (target) {
+      case "self":
+        const [player, effect] = character.cast(state.getIn(["characters", ...playerPath]), spell);
+        const nextPlayer = applyEffect(player, effect);
+        return state.setIn(["characters", ...playerPath], nextPlayer);
+      default:
+        throw new Error(`Unknown target "${target}"`);
+    }
   };
 
   return validate(schema, stateSchema, fun, state, playerPath, spell, target);
