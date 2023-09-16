@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import * as character from "src/character/character.js";
 import { Builder } from "src/character/builder.js";
+import { heal as healSpell } from "src/character//spells.js";
 
 const builder = new Builder();
 
@@ -81,7 +82,7 @@ describe("When checking if a character equips a spell", () => {
 });
 
 describe("When a character casts a spell", () => {
-  const player = builder.withHP(70, 99).withSpell("heal", { potency: 20, cost: 4 }).build();
+  const player = builder.withHP(70, 99).withSpell("heal", healSpell).build();
 
   it("should increase his HP", () => {
     const playerAfter = character.cast(player, "heal");

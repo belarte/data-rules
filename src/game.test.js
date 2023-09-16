@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import { Game } from "src/game.js";
 import { Builder } from "src/character/builder.js";
+import { heal as healSpell } from "src/character/spells.js";
 
 const builder = new Builder();
 
@@ -89,7 +90,7 @@ describe("A character with heal-self behavior", () => {
     const character = builder
       .withBehavior("heal-self")
       .withHP(100, 100)
-      .withSpell({ heal: { potency: 20, cost: 4 } })
+      .withSpell({ heal: healSpell })
       .build();
     game.addCharacter("Blue Team", "Blue", character);
     game.play("Blue Team", "Blue");
@@ -103,13 +104,13 @@ describe("A character with heal-self behavior", () => {
       .withBehavior("heal-self")
       .withHP(49, 100)
       .withMP(10, 10)
-      .withSpell("heal", { potency: 20, cost: 4 })
+      .withSpell("heal", healSpell)
       .build();
     const expected = builder
       .withBehavior("heal-self")
       .withHP(69, 100)
       .withMP(6, 10)
-      .withSpell("heal", { potency: 20, cost: 4 })
+      .withSpell("heal", healSpell)
       .build();
 
     game.addCharacter("Blue Team", "Blue", character);
