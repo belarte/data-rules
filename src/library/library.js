@@ -127,7 +127,7 @@ const applyEffect = (player, effect) => {
   const [operation, path, value] = effect;
   const nextPlayer = player.updateIn(path, stat => operations[operation](stat, value));
   return nextPlayer;
-}
+};
 
 const operations = {
   add: (a, b) => a + b,
