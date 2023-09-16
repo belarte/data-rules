@@ -110,7 +110,7 @@ export const cast = (state, playerPath, spell, target) => {
   };
 
   const fun = (state, playerPath, spell) => {
-    const nextPlayer = character.cast(state.getIn(["characters", ...playerPath]), spell);
+    const [nextPlayer] = character.cast(state.getIn(["characters", ...playerPath]), spell);
     return state.setIn(["characters", ...playerPath], nextPlayer);
   };
 
