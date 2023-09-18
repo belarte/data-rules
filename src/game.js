@@ -3,7 +3,7 @@ import Immutable from "immutable";
 
 import { SystemState } from "src/system.js";
 import { parse } from "src/behavior/parser.js";
-import * as library from "src/library/library.js";
+import { library } from "src/library/library.js";
 
 export class Game {
   constructor() {
