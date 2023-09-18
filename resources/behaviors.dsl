@@ -18,3 +18,12 @@ heal-self {
     then
         cast heal self
 }
+
+heal-ally {
+    when
+        ally hp below 50%;
+        equipped spells.heal;
+        mp above spells.heal.cost;
+    then
+        cast heal ally
+}

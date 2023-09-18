@@ -23,6 +23,16 @@ heal-self {
         cast heal self
 }`;
 
+const healAlly = `
+heal-ally {
+    when
+        ally hp below 50%;
+        equipped spells.heal;
+        mp above spells.heal.cost;
+    then
+        cast heal ally
+}`;
+
 const output = {
   idle: {
     conditions: [],
@@ -69,6 +79,27 @@ const output = {
       args: ["heal", "self"],
     },
   },
+
+  "heal-ally": {
+    conditions: [
+      {
+        name: "ally",
+        args: ["hp", "below", 0.5],
+      },
+      {
+        name: "equipped",
+        args: [["spells", "heal"]],
+      },
+      {
+        name: "mp",
+        args: ["above", ["spells", "heal", "cost"]],
+      },
+    ],
+    action: {
+      name: "cast",
+      args: ["heal", "ally"],
+    },
+  },
 };
 
 describe("The parser", () => {
@@ -76,6 +107,7 @@ describe("The parser", () => {
     ["idle", idle],
     ["drink-potion", drinkPotion],
     ["heal-self", healSelf],
+    ["heal-ally", healAlly],
   ])("should parse %s", (name, input) => {
     const parsed = parse(input);
     expect(Object.keys(parsed)).toHaveLength(1);

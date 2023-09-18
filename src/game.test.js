@@ -10,9 +10,12 @@ describe("The game", () => {
   const game = new Game();
   const behaviors = game.state.get().get("behaviors").keySeq().toJS();
 
-  it.each([["idle"], ["drink-potion"], ["heal-self"]])("should load behavior %s", behavior => {
-    expect(behaviors).toContain(behavior);
-  });
+  it.each([["idle"], ["drink-potion"], ["heal-self"], ["heal-ally"]])(
+    "should load behavior %s",
+    behavior => {
+      expect(behaviors).toContain(behavior);
+    },
+  );
 });
 
 describe("A character with idle behavior", () => {
