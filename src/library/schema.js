@@ -47,3 +47,10 @@ export const targetSchema = {
   type: "string",
   enum: ["self"],
 };
+
+export const conditionOutputSchema = {
+  type: "array",
+  items: [booleanSchema],
+  minItems: 1,
+  maxItems: 1,
+};

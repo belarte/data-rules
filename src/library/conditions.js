@@ -4,7 +4,7 @@ import {
   stateSchema,
   comparatorSchema,
   numberSchema,
-  booleanSchema,
+  conditionOutputSchema,
   stringSchema,
   pathSchema,
 } from "src/library/schema.js";
@@ -20,10 +20,10 @@ const hp = (state, playerPath, comparator, value) => {
   const fun = (state, playerPath, comparator, value) => {
     const comparatorFn = comparators[comparator];
     const player = state.getIn(["characters", ...playerPath]);
-    return comparatorFn(character.hp(player), value);
+    return [comparatorFn(character.hp(player), value)];
   };
 
-  return validate(schema, booleanSchema, fun, state, playerPath, comparator, value);
+  return validate(schema, conditionOutputSchema, fun, state, playerPath, comparator, value);
 };
 
 const mp = (state, playerPath, comparator, valuePath) => {
@@ -38,10 +38,10 @@ const mp = (state, playerPath, comparator, valuePath) => {
     const comparatorFn = comparators[comparator];
     const player = state.getIn(["characters", ...playerPath]);
     const value = player.getIn(["equippement", ...valuePath]);
-    return comparatorFn(character.mp(player), value);
+    return [comparatorFn(character.mp(player), value)];
   };
 
-  return validate(schema, booleanSchema, fun, state, playerPath, comparator, valuePath);
+  return validate(schema, conditionOutputSchema, fun, state, playerPath, comparator, valuePath);
 };
 
 const equipped = (state, playerPath, path) => {
@@ -53,10 +53,10 @@ const equipped = (state, playerPath, path) => {
   };
 
   const fun = (state, playerPath, path) => {
-    return character.equipped(state.getIn(["characters", ...playerPath]), path);
+    return [character.equipped(state.getIn(["characters", ...playerPath]), path)];
   };
 
-  return validate(schema, booleanSchema, fun, state, playerPath, path);
+  return validate(schema, conditionOutputSchema, fun, state, playerPath, path);
 };
 
 const carries = (state, playerPath, item) => {
@@ -69,10 +69,10 @@ const carries = (state, playerPath, item) => {
 
   const fun = (state, playerPath, item) => {
     const player = state.getIn(["characters", ...playerPath]);
-    return character.carries(player, item);
+    return [character.carries(player, item)];
   };
 
-  return validate(schema, booleanSchema, fun, state, playerPath, item);
+  return validate(schema, conditionOutputSchema, fun, state, playerPath, item);
 };
 
 const comparators = {

@@ -35,9 +35,12 @@ export class Game {
 }
 
 const evaluateRule = (state, playerPath, behavior) => {
-  const evaluatedCondition = state
+  const [evaluatedCondition] = state
     .getIn(["behaviors", behavior, "conditions"])
-    .every(c => evaluateFunction(state, playerPath, c));
+    .reduce(([current], c) => {
+      const [res] = evaluateFunction(state, playerPath, c);
+      return [current && res];
+    }, [true]);
 
   if (evaluatedCondition) {
     const action = state.getIn(["behaviors", behavior, "action"]);
