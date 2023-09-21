@@ -3,16 +3,17 @@ import { validate } from "src/validation/validation.js";
 import {
   stateSchema,
   comparatorSchema,
-  numberSchema,
+  percentageSchema,
   conditionOutputSchema,
   stringSchema,
   pathSchema,
+  playerPathSchema,
 } from "src/library/schema.js";
 
 const hp = (state, playerPath, comparator, value) => {
   const schema = {
     type: "array",
-    items: [stateSchema, pathSchema, comparatorSchema, numberSchema],
+    items: [stateSchema, playerPathSchema, comparatorSchema, percentageSchema],
     minItems: 4,
     maxItems: 4,
   };
