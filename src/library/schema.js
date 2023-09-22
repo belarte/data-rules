@@ -37,6 +37,7 @@ export const percentageSchema = {
 
 export const stringSchema = {
   type: "string",
+  minLength: 1,
 };
 
 export const booleanSchema = {

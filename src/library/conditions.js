@@ -30,7 +30,7 @@ const hp = (state, playerPath, comparator, value) => {
 const mp = (state, playerPath, comparator, valuePath) => {
   const schema = {
     type: "array",
-    items: [stateSchema, pathSchema, comparatorSchema, pathSchema],
+    items: [stateSchema, playerPathSchema, comparatorSchema, pathSchema],
     minItems: 4,
     maxItems: 4,
   };
@@ -48,7 +48,7 @@ const mp = (state, playerPath, comparator, valuePath) => {
 const equipped = (state, playerPath, path) => {
   const schema = {
     type: "array",
-    items: [stateSchema, pathSchema, pathSchema],
+    items: [stateSchema, playerPathSchema, pathSchema],
     minItems: 3,
     maxItems: 3,
   };
@@ -63,7 +63,7 @@ const equipped = (state, playerPath, path) => {
 const carries = (state, playerPath, item) => {
   const schema = {
     type: "array",
-    items: [stateSchema, pathSchema, stringSchema],
+    items: [stateSchema, playerPathSchema, stringSchema],
     minItems: 3,
     maxItems: 3,
   };
