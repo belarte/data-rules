@@ -1,6 +1,6 @@
 import * as character from "src/character/character.js";
 import { validate } from "src/validation/validation.js";
-import { stateSchema, stringSchema, pathSchema, targetSchema } from "src/library/schema.js";
+import { stateSchema, stringSchema, targetSchema, playerPathSchema } from "src/library/schema.js";
 
 const wait = state => {
   return state;
@@ -9,7 +9,7 @@ const wait = state => {
 const use = (state, playerPath, item) => {
   const schema = {
     type: "array",
-    items: [stateSchema, pathSchema, stringSchema],
+    items: [stateSchema, playerPathSchema, stringSchema],
     minItems: 3,
     maxItems: 3,
   };
@@ -26,7 +26,7 @@ const use = (state, playerPath, item) => {
 const cast = (state, playerPath, spell, target) => {
   const schema = {
     type: "array",
-    items: [stateSchema, pathSchema, stringSchema, targetSchema],
+    items: [stateSchema, playerPathSchema, stringSchema, targetSchema],
     minItems: 4,
     maxItems: 4,
   };
