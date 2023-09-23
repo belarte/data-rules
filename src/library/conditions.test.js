@@ -7,6 +7,38 @@ import { conditions } from "src/library/conditions.js";
 const builder = new CharacterBuilder();
 const stateBuilder = new StateBuilder();
 
+describe("A character with an ally with low HP", () => {
+  const player = builder.build();
+  const ally = builder.withHP(10, 100).build();
+  const state = stateBuilder
+    .withCharacter("Blue Team", "Blue", player)
+    .withCharacter("Blue Team", "Red", ally)
+    .build();
+
+  it.each([
+    ["hp", "above", 0.1, [false, {}]],
+    ["hp", "below", 0.10001, [true, { target: ["Blue Team", "Red"] }]],
+  ])("should have an ally with %s %s %d = %s", (stat, comp, value, expected) => {
+    const ally = conditions.ally(state, ["Blue Team", "Blue"], stat, comp, value);
+    expect(ally).toStrictEqual(expected);
+  });
+
+  it.each([
+    ["player path is empty", [], "hp", "above", 0.1],
+    ["player path is invalid (length=1)", ["Blue Team"], "hp", "above", 0.1],
+    ["player path is invalid (length=3)", ["Blue Team", "Blue", "Blue"], "hp", "above", 0.1],
+    ["player path is invalid (not strings)", [1, 2], "hp", "above", 0.1],
+  ])("should fail validation because %s", (_reason, path, stat, comp, value) => {
+    expect(_ => conditions.ally(state, path, stat, comp, value)).toThrow(/invalid argument/i);
+  });
+
+  it("should fail when condition does not exist", () => {
+    expect(_ =>
+      conditions.ally(state, ["Blue Team", "Blue"], "does-not-exist", "above", 0.1),
+    ).toThrow(/conditions\[condition\] is not a function/i);
+  });
+});
+
 describe("A character with 50/100 hp", () => {
   const player = builder.withHP(50, 100).build();
   const state = stateBuilder.withCharacter("Blue Team", "Blue", player).build();

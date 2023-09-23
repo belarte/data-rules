@@ -6,7 +6,7 @@ const unwrapArgs = args => args.map(arg => (isImmutable(arg) ? arg.toJS() : arg)
 
 const unwrapRes = res => (isImmutable(res) ? res.toJS() : res);
 
-const validator = new Ajv({ allErrors: true });
+const validator = new Ajv({ allErrors: true, strictTuples: false });
 
 export const validate = (argsSchema, resSchema, fun, ...args) => {
   if (!validator.validate(argsSchema, unwrapArgs(args))) {

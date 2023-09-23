@@ -59,12 +59,12 @@ export const playerPathSchema = {
 
 export const targetSchema = {
   type: "string",
-  enum: ["self"],
+  enum: ["self", "ally"],
 };
 
 export const conditionOutputSchema = {
   type: "array",
-  items: [booleanSchema],
+  items: [booleanSchema, { type: "object" }],
   minItems: 1,
-  maxItems: 1,
+  maxItems: 2,
 };
