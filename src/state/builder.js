@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { merge } from 'lodash';
 
 export class Builder {
   constructor() {
@@ -18,14 +19,13 @@ export class Builder {
   }
 
   withCharacter(team, name, character) {
-    this.state = {
-      ...this.state,
+    this.state = merge(this.state, {
       characters: {
         [`${team}`]: {
           [`${name}`]: character,
         },
       },
-    };
+    });
     return this;
   }
 
