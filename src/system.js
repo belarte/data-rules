@@ -1,15 +1,19 @@
-import { Map } from "immutable";
+import { fromJS } from "immutable";
 
 export class SystemState {
-  constructor() {
-    this.state = Map({});
-  }
+    constructor() {
+        this.state = fromJS({
+            characters: {},
+            behaviors: {},
+            additionalInfo: {},
+        });
+    }
 
-  get() {
-    return this.state;
-  }
+    get() {
+        return this.state;
+    }
 
-  commit(next) {
-    this.state = next;
-  }
+    commit(next) {
+        this.state = next;
+    }
 }
