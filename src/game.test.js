@@ -89,7 +89,7 @@ describe("A character with heal-self behavior", () => {
         expect(after).toStrictEqual(character);
     });
 
-    it("should not heal a potion when his life is full", () => {
+    it("should not heal when his life is full", () => {
         const character = builder
             .withBehavior("heal-self")
             .withHP(100, 100)
@@ -112,6 +112,27 @@ describe("A character with heal-self behavior", () => {
         const expected = builder
             .withBehavior("heal-self")
             .withHP(69, 100)
+            .withMP(6, 10)
+            .withSpell("heal", healSpell)
+            .build();
+
+        game.addCharacter("Blue Team", "Blue", character);
+        game.play("Blue Team", "Blue");
+
+        const after = game.state.get().getIn(["characters", "Blue Team", "Blue"]);
+        expect(after).toStrictEqual(expected);
+    });
+
+    it("should heal when his life is low but not above max HP", () => {
+        const character = builder
+            .withBehavior("heal-self")
+            .withHP(9, 20)
+            .withMP(10, 10)
+            .withSpell("heal", healSpell)
+            .build();
+        const expected = builder
+            .withBehavior("heal-self")
+            .withHP(20, 20)
             .withMP(6, 10)
             .withSpell("heal", healSpell)
             .build();

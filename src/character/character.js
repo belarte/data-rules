@@ -35,6 +35,6 @@ export const equipped = (character, path) => {
 
 export const cast = (character, spell) => {
   const cost = character.getIn(["equippement", "spells", spell, "cost"]);
-  const effect = character.getIn(["equippement", "spells", spell, "effect"]).toJS();
+  const effect = character.getIn(["equippement", "spells", spell, "effect"]);
   return [character.updateIn(["stats", "currentMP"], mp => mp - cost), effect];
 };

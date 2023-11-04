@@ -41,12 +41,12 @@ const cast = (state, playerPath, spell, target) => {
 
         switch (target) {
             case "self":
-                const nextPlayer = applyEffect(player, effect);
+                const nextPlayer = effect(player);
                 return state.setIn(["characters", ...playerPath], nextPlayer);
             case "ally":
                 const target = state.getIn(["additionalInfo", "target"]);
                 const ally = state.getIn(["characters", ...target]);
-                const nextAlly = applyEffect(ally, effect);
+                const nextAlly = effect(ally);
                 return state
                     .setIn(["characters", ...playerPath], player)
                     .setIn(["characters", ...target], nextAlly);
@@ -56,16 +56,6 @@ const cast = (state, playerPath, spell, target) => {
     };
 
     return validate(schema, stateSchema, fun, state, playerPath, spell, target);
-};
-
-const applyEffect = (player, effect) => {
-    const [operation, path, value] = effect;
-    const nextPlayer = player.updateIn(path, stat => operations[operation](stat, value));
-    return nextPlayer;
-};
-
-const operations = {
-    add: (a, b) => a + b,
 };
 
 export const actions = {
