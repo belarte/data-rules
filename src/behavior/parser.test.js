@@ -10,7 +10,7 @@ drink-potion {
         hp below 50%;
         carries health-potion;
     then
-        use health-potion
+        use health-potion self
 }`;
 
 const healSelf = `
@@ -55,7 +55,7 @@ const output = {
     ],
     action: {
       name: "use",
-      args: ["health-potion"],
+      args: ["health-potion", "self"],
     },
   },
 

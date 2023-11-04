@@ -7,7 +7,7 @@ drink-potion {
         hp below 50%;
         carries health-potion;
     then
-        use health-potion
+        use health-potion self
 }
 
 heal-self {

@@ -29,7 +29,7 @@ describe("A charater with an item", () => {
         const expectedPlayer = builder.withHP(80, 100).build();
         const expectedState = stateBuilder.withCharacter("Blue Team", "Blue", expectedPlayer).build();
 
-        const nextState = actions.use(state, ["Blue Team", "Blue"], "item");
+        const nextState = actions.use(state, ["Blue Team", "Blue"], "item", "self");
         expect(nextState).toStrictEqual(expectedState);
     });
 

@@ -6,21 +6,26 @@ const wait = state => {
     return state;
 };
 
-const use = (state, playerPath, item) => {
+const use = (state, playerPath, item, target) => {
     const schema = {
         type: "array",
-        items: [stateSchema, playerPathSchema, stringSchema],
-        minItems: 3,
-        maxItems: 3,
+        items: [stateSchema, playerPathSchema, stringSchema, stringSchema],
+        minItems: 4,
+        maxItems: 4,
     };
 
-    const fun = (state, playerPath, item) => {
-        const player = state.getIn(["characters", ...playerPath]);
-        const nextPlayer = character.use(player, item);
-        return state.setIn(["characters", ...playerPath], nextPlayer);
+    const fun = (state, playerPath, item, target) => {
+        switch (target) {
+            case "self":
+                const player = state.getIn(["characters", ...playerPath]);
+                const nextPlayer = character.use(player, item);
+                return state.setIn(["characters", ...playerPath], nextPlayer);
+            default:
+                throw new Error(`Unknown target "${target}"`);
+        }
     };
 
-    return validate(schema, stateSchema, fun, state, playerPath, item);
+    return validate(schema, stateSchema, fun, state, playerPath, item, target);
 };
 
 const cast = (state, playerPath, spell, target) => {
