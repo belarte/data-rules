@@ -3,7 +3,6 @@ import { describe, it, expect } from "vitest";
 import { Builder as CharacterBuilder } from "src/character/builder.js";
 import { Builder as StateBuilder } from "src/state/builder.js";
 import { actions } from "./actions.js";
-import { heal } from "src/character/spells.js";
 
 const builder = new CharacterBuilder();
 const stateBuilder = new StateBuilder();
@@ -44,7 +43,7 @@ describe("A charater with an item", () => {
 });
 
 describe("A character with a spell equipped", () => {
-    const player = builder.withHP(50, 100).withMP(6, 10).withSpell("spell", heal).build();
+    const player = builder.withHP(50, 100).withMP(6, 10).withSpell("heal").build();
     const ally = builder.withHP(50, 100).build();
     const state = stateBuilder
         .withCharacter("Blue Team", "Blue", player)
@@ -53,14 +52,14 @@ describe("A character with a spell equipped", () => {
         .build();
 
     it("should be able to cast it on herself", () => {
-        const expectedPlayer = builder.withHP(70, 100).withMP(2, 10).withSpell("spell", heal).build();
+        const expectedPlayer = builder.withHP(70, 100).withMP(2, 10).withSpell("heal").build();
         const expectedState = stateBuilder
             .withCharacter("Blue Team", "Blue", expectedPlayer)
             .withCharacter("Blue Team", "Cyan", ally)
             .withAdditionalInfo({ target: ["Blue Team", "Cyan"] })
             .build();
 
-        const nextState = actions.cast(state, ["Blue Team", "Blue"], "spell", "self");
+        const nextState = actions.cast(state, ["Blue Team", "Blue"], "heal", "self");
         expect(nextState).toStrictEqual(expectedState);
     });
 
@@ -68,7 +67,7 @@ describe("A character with a spell equipped", () => {
         const expectedPlayer = builder
             .withHP(50, 100)
             .withMP(2, 10)
-            .withSpell("spell", heal)
+            .withSpell("heal")
             .build();
         const expectedAlly = builder
             .withHP(70, 100)
@@ -79,7 +78,7 @@ describe("A character with a spell equipped", () => {
             .withAdditionalInfo({ target: ["Blue Team", "Cyan"] })
             .build();
 
-        const nextState = actions.cast(state, ["Blue Team", "Blue"], "spell", "ally");
+        const nextState = actions.cast(state, ["Blue Team", "Blue"], "heal", "ally");
         expect(nextState).toStrictEqual(expectedState);
     });
 

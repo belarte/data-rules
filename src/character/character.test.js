@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import * as character from "src/character/character.js";
 import { Builder } from "src/character/builder.js";
-import { heal } from "src/character/spells.js";
+import { spells } from "src/character/spells.js";
 
 const builder = new Builder();
 
@@ -75,14 +75,14 @@ describe("When checking if a character equips a spell", () => {
   });
 
   it("should return true if spell is equipped", () => {
-    const player = builder.withSpell("heal", {}).build();
+    const player = builder.withSpell("heal").build();
     const equipped = character.equipped(player, ["spells", "heal"]);
     expect(equipped).toBeTruthy();
   });
 });
 
 describe("When a character casts a spell", () => {
-  const player = builder.withHP(70, 99).withSpell("heal", heal).build();
+  const player = builder.withHP(70, 99).withSpell("heal").build();
   const [playerAfter, effect] = character.cast(player, "heal");
 
   it("should decrease his MP when cast once", () => {
@@ -90,6 +90,6 @@ describe("When a character casts a spell", () => {
   });
 
   it("should return the effect of the spell", () => {
-    expect(effect).toStrictEqual(heal.effect);
+    expect(effect).toStrictEqual(spells.heal.effect);
   });
 });

@@ -71,12 +71,12 @@ describe("A character with 50/100 hp", () => {
 });
 
 describe("A character with 6/10 mp", () => {
-  const player = builder.withMP(6, 10).withSpell("spell", { cost: 4 }).build();
+  const player = builder.withMP(6, 10).withSpell("heal").build();
   const state = stateBuilder.withCharacter("Blue Team", "Blue", player).build();
 
   it.each([
-    ["above", ["spells", "spell", "cost"], true],
-    ["below", ["spells", "spell", "cost"], false],
+    ["above", ["spells", "heal", "cost"], true],
+    ["below", ["spells", "heal", "cost"], false],
   ])("should have %s %s = %s", (comp, valuePath, expected) => {
     const [mp] = conditions.mp(state, ["Blue Team", "Blue"], comp, valuePath);
     expect(mp).toBe(expected);
@@ -107,7 +107,7 @@ describe("A character with 6/10 mp", () => {
 });
 
 describe("A character with a spell equipped", () => {
-  const player = builder.withSpell("spell", { cost: 4 }).build();
+  const player = builder.withSpell("spell").build();
   const state = stateBuilder.withCharacter("Blue Team", "Blue", player).build();
 
   it.each([

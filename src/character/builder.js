@@ -1,5 +1,7 @@
 import Immutable from "immutable";
 
+import { spells } from "src/character/spells.js";
+
 export class Builder {
   constructor() {
     this.reset();
@@ -38,8 +40,8 @@ export class Builder {
     return this;
   }
 
-  withSpell(name, spell) {
-    this.character.equippement.spells[name] = spell;
+  withSpell(name) {
+    this.character.equippement.spells[name] = spells[name];
     return this;
   }
 
