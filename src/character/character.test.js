@@ -60,17 +60,6 @@ describe("When a character uses a potion", () => {
         .withItem("health-potion", 7)
         .build();
 
-    it("should increase his HP", () => {
-        const [playerAfter] = character.use(player, "health-potion");
-        expect(playerAfter.getIn(["stats", "currentHP"])).toBe(80);
-    });
-
-    it("should increase his HP but not above the maximum", () => {
-        const [temp] = character.use(player, "health-potion");
-        const [playerAfter] = character.use(temp, "health-potion");
-        expect(playerAfter.getIn(["stats", "currentHP"])).toBe(100);
-    });
-
     it("should only use one potion", () => {
         const [playerAfter] = character.use(player, "health-potion");
         expect(playerAfter.getIn(["bag", "health-potion", "quantity"])).toBe(6);

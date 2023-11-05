@@ -44,7 +44,6 @@ export class Builder {
     withItem(name, quantity) {
         this.character.bag[name] = {
             quantity,
-            potency: 30,
             effect: items[name]
         };
         return this;

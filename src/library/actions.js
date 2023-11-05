@@ -18,8 +18,8 @@ const use = (state, playerPath, item, target) => {
         switch (target) {
             case "self":
                 const player = state.getIn(["characters", ...playerPath]);
-                const [nextPlayer] = character.use(player, item);
-                return state.setIn(["characters", ...playerPath], nextPlayer);
+                const [nextPlayer, effect] = character.use(player, item);
+                return state.setIn(["characters", ...playerPath], effect(nextPlayer));
             default:
                 throw new Error(`Unknown target "${target}"`);
         }
