@@ -20,7 +20,7 @@ describe("The wait action", () => {
 describe("A charater with an item", () => {
     const player = builder
         .withHP(50, 100)
-        .withBag({ item: { potency: 30, quantity: 1 } })
+        .withItem("health-potion", 1)
         .build();
     const state = stateBuilder.withCharacter("Blue Team", "Blue", player).build();
 
@@ -28,7 +28,7 @@ describe("A charater with an item", () => {
         const expectedPlayer = builder.withHP(80, 100).build();
         const expectedState = stateBuilder.withCharacter("Blue Team", "Blue", expectedPlayer).build();
 
-        const nextState = actions.use(state, ["Blue Team", "Blue"], "item", "self");
+        const nextState = actions.use(state, ["Blue Team", "Blue"], "health-potion", "self");
         expect(nextState).toStrictEqual(expectedState);
     });
 
