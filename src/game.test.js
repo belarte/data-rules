@@ -49,7 +49,7 @@ describe("A character with drink-potion behavior", () => {
         const character = builder
             .withBehavior("drink-potion")
             .withHP(51, 100)
-            .withBag({ "health-potion": { potency: 30, quantity: 1 } })
+            .withItem("health-potion", 1)
             .build();
 
         game.addCharacter("Blue Team", "Blue", character);
@@ -63,7 +63,7 @@ describe("A character with drink-potion behavior", () => {
         const character = builder
             .withBehavior("drink-potion")
             .withHP(49, 100)
-            .withBag({ "health-potion": { potency: 30, quantity: 1 } })
+            .withItem("health-potion", 1)
             .build();
 
         const expected = builder.withBehavior("drink-potion").withHP(79, 100).build();

@@ -55,11 +55,6 @@ export class Builder {
         return this;
     }
 
-    withBag(bag) {
-        this.character.bag = bag;
-        return this;
-    }
-
     build() {
         const result = Immutable.fromJS(this.character);
         this.reset();

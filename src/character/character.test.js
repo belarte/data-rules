@@ -29,21 +29,29 @@ describe("A character's mp", () => {
 
 describe("A character's bag", () => {
     it.each([
-        [{ "health-potion": { quantity: 1 } }],
-        [{ "health-potion": { quantity: 7 } }],
-        [{ "health-potion": { quantity: 1 }, "mana-potion": { quantity: 1 } }],
-    ])("should contain a potion when the player carries %o", bag => {
-        const player = builder.withBag(bag).build();
+        [["health-potion", 1]],
+        [["health-potion", 7]],
+        [["health-potion", 1], ["mana-potion", 1]],
+    ])("should contain a potion when the player carries %o", (...items) => {
+        for (const [item, quantity] of items) {
+            builder.withItem(item, quantity);
+        }
+        const player = builder.build();
         expect(character.carries(player, "health-potion")).toBeTruthy();
     });
 
-    it.each([[{}], [{ "health-potion": { quantity: 0 } }], [{ "mana-potion": { quantity: 1 } }]])(
+    it.each([["health-potion", 0], ["mana-potion", 1]])(
         `should not contain a potion when the player carries %o`,
-        bag => {
-            const player = builder.withBag(bag).build();
+        (item, quantity) => {
+            const player = builder.withItem(item, quantity).build();
             expect(character.carries(player, "health-potion")).toBeFalsy();
         },
     );
+
+    it("should not contain anything when bag is empty", () => {
+        const player = builder.build();
+        expect(character.carries(player, "health-potion")).toBeFalsy();
+    });
 });
 
 describe("When a character uses a potion", () => {

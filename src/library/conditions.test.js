@@ -131,7 +131,7 @@ describe("A character with a spell equipped", () => {
 });
 
 describe("A character with a health potion in her bag", () => {
-  const player = builder.withBag({ "health-potion": { quantity: 1 } }).build();
+  const player = builder.withItem("health-potion", 1).build();
   const state = stateBuilder.withCharacter("Blue Team", "Blue", player).build();
 
   it.each([
