@@ -9,7 +9,7 @@ const wait = state => {
 const use = (state, playerPath, item, target) => {
     const schema = {
         type: "array",
-        items: [stateSchema, playerPathSchema, stringSchema, stringSchema],
+        items: [stateSchema, playerPathSchema, stringSchema, targetSchema],
         minItems: 4,
         maxItems: 4,
     };
